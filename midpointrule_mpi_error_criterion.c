@@ -123,16 +123,16 @@ int main( int argc, char **argv )
       fprintf( fp, "Min. MFLOPS: %10.2g\n", min_mflops );
       fprintf( fp, "Wallclocktime: %f s\n", end - begin );
 
-      fclose( fp );
+ //     fclose( fp );
       
-      }
+ //     }
       
       
    
-    if ( rank == 0 )
-      {
+ //   if ( rank == 0 )
+ //     {
           
-        FILE *fp = fopen( "output.txt", "a" );
+ //       FILE *fp = fopen( "output.txt", "a" );
         
         fprintf(  fp, "\n" );
         fprintf(  fp, "MFLOPS: %g\n", mflops );
