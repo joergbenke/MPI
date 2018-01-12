@@ -147,6 +147,8 @@ int main( int argc, char **argv )
   }
       
   MPI_Finalize( );
+ 
+  printf( "End of calculating PI" );
 
   return 0;
 
