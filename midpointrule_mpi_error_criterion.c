@@ -79,14 +79,10 @@ int main( int argc, char **argv )
 
       begin_loop = MPI_Wtime();
 
-      h = 1.0 / ( double ) increment;
-      // rank_increment = ( rank + 1 ) * increment;
-
-      // for ( unsigned long int i = rank * increment; i < rank_increment; i++ )
+      h = 1.0 / ( double ) increment
       for ( unsigned long int i = rank + 1; i <= increment; i += size )
 	{
 
-	  //	x = ( ( double ) i + 0.5 ) * h;
 	  x = ( ( double ) i - 0.5 ) * h;
 	  sum = sum + ( 4.0 / ( 1.0 + x * x ) ); 
 
@@ -139,10 +135,6 @@ int main( int argc, char **argv )
       }
       
           
-       
-
-
-
   MPI_Finalize( );
 
   return 0;
