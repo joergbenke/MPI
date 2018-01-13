@@ -1,0 +1,43 @@
+----- START: SLURM settings -----
+
+SLURM JOBID = 456130
+SLURM working directory = /work/rznv121/MPI/Integral
+SLURM TMPDIR = /scratch/rznv121.456130
+
+Number of nodes of the job = 2
+SLURM JOB_NODELIST = node[038-039]
+Number of cores on node=32
+Number of cores per task=
+node038
+node038
+node038
+node038
+node038
+node038
+node038
+node038
+node038
+node038
+node038
+node038
+node038
+node038
+node038
+node038
+node039
+node039
+node039
+node039
+node039
+node039
+node039
+node039
+node039
+node039
+node039
+node039
+node039
+node039
+node039
+node039
+End of calculating PIEnd of calculating PIEnd of calculating PIEnd of calculating PIEnd of calculating PIEnd of calculating PIEnd of calculating PIEnd of calculating PIEnd of calculating PIEnd of calculating PIEnd of calculating PIEnd of calculating PIEnd of calculating PIEnd of calculating PIEnd of calculating PIEnd of calculating PIEnd of calculating PIEnd of calculating PIEnd of calculating PIEnd of calculating PIEnd of calculating PIEnd of calculating PIEnd of calculating PIEnd of calculating PIEnd of calculating PIEnd of calculating PIEnd of calculating PIEnd of calculating PIEnd of calculating PIEnd of calculating PIEnd of calculating PIEnd of calculating PI

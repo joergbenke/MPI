@@ -7,7 +7,7 @@
 // OK - IO server machen 
 // OK - MPI_Allreduce und Abbruch bzgl fehlerkriterium
 // OK - aufteilung der intervalle so, dass man nicht nur gleiche anzahl besitzt
-// openmp
+// - openmp
 // - thread-binding (nur Openmp-Basis)
 // OK - process binding
 // kurz intel compiler
