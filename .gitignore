@@ -1,4 +1,3 @@
 *.o
 *.txt
-!parameters.txt
 midpointrule_mpi_error_criterion
