@@ -30,7 +30,7 @@
 
 #define M_PI 3.14159265358979323
 
-unsigned int size, rank;
+int size, rank;
 unsigned long int nr_of_intervalls = 0;
 unsigned long int iter = 0, nr_of_iterations = 1000000;  
 unsigned long int increment = 0, rank_increment = 0;
@@ -45,12 +45,13 @@ double begin, end;
 int main( int argc, char **argv )
 {
 
-  char string[ 100 ];
+  char string[ 100 ], string_processor_name[ 100 ];
   char *ptr;
 
+  int processor_name_length = 0;
   unsigned long int i = 0, j = 0;
   
-  MPI_Status *status;
+  MPI_Status *status = NULL;
 
   
   MPI_Init( &argc, &argv );
@@ -58,6 +59,8 @@ int main( int argc, char **argv )
   MPI_Comm_size( MPI_COMM_WORLD, &size );
   MPI_Comm_rank( MPI_COMM_WORLD, &rank );
 
+  MPI_Get_processor_name( string_processor_name, &processor_name_length );
+  printf( "%s\n", string_processor_name );
 
   if ( rank == 0 )
     {
@@ -83,7 +86,7 @@ int main( int argc, char **argv )
   while( ( error > tolerance ) && ( iter < nr_of_iterations ) )
     { 
 
-      j= 0;
+      j = 0;
       sum = 0.0;
 
       iter = iter + 1;
@@ -100,7 +103,7 @@ int main( int argc, char **argv )
 	}
 
       my_pi = sum * h;
-      mflops = mflops + j * 6.0 + 2.0;
+      mflops = mflops + ( j + 1 ) * 6.0;
 
       MPI_Allreduce( &my_pi, &pi, 1, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD );
  
@@ -122,12 +125,12 @@ int main( int argc, char **argv )
        
       fprintf( fp, "Approximation of PI: %15.13lf\n", pi );
       fprintf( fp, "Error: %15.13g\n", fabs( pi - M_PI ) );
+      fprintf( fp, "Wallclocktime of process 0: %f s\n", end - begin );
+      fprintf( fp, "\n" );
       fprintf( fp, "Nr of iterations: %lu\n", iter );
-      fprintf( fp, "Max. MFLOPS: %10.2g\n", max_mflops );
-      fprintf( fp, "Min. MFLOPS: %10.2g\n", min_mflops );
-      fprintf( fp, "Wallclocktime: %f s\n", end - begin );
+      fprintf( fp, "Max. MFLOPS: %g\n", max_mflops );
+      fprintf( fp, "Min. MFLOPS: %g\n", min_mflops );
 
-      fprintf(  fp, "\n" );
       fprintf(  fp, "MFLOPS: %g\n", mflops );
         
       for ( unsigned int i = 1; i < size; i++ )
