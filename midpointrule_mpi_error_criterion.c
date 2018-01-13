@@ -30,7 +30,7 @@
 
 #define M_PI 3.14159265358979323
 
-int size, rank;
+int size, rank, rank_id_max, rank_id_min;
 unsigned long int nr_of_intervalls = 0;
 unsigned long int iter = 0, nr_of_iterations = 1000000;  
 unsigned long int increment = 0, rank_increment = 0;
@@ -39,8 +39,9 @@ double sum = 0.0, my_pi = 0.0, pi = 0.0, error = 10.0;
 double x = 0.0, h = 0.0;
 double tolerance = 0.0;
 double mflops = 0.0, max_mflops = 0.0, min_mflops = 0.0;
+double tmp_max_mflops = 0.0, tmp_min_mflops = 1000000000.0;
 double begin, end;
-
+double *array_mflops;
 
 int main( int argc, char **argv )
 {
@@ -61,6 +62,8 @@ int main( int argc, char **argv )
 
   MPI_Get_processor_name( string_processor_name, &processor_name_length );
   printf( "%s\n", string_processor_name );
+
+  array_mflops = ( double * ) malloc( sizeof( double ) * size );
 
   if ( rank == 0 )
     {
@@ -125,21 +128,50 @@ int main( int argc, char **argv )
        
       fprintf( fp, "Approximation of PI: %15.13lf\n", pi );
       fprintf( fp, "Error: %15.13g\n", fabs( pi - M_PI ) );
+      fprintf( fp, "Nr of iterations in process 0: %lu\n", iter );
       fprintf( fp, "Wallclocktime of process 0: %f s\n", end - begin );
       fprintf( fp, "\n" );
-      fprintf( fp, "Nr of iterations: %lu\n", iter );
-      fprintf( fp, "Max. MFLOPS: %g\n", max_mflops );
-      fprintf( fp, "Min. MFLOPS: %g\n", min_mflops );
-
-      fprintf(  fp, "MFLOPS: %g\n", mflops );
         
+      tmp_max_mflops = mflops;
+      tmp_min_mflops = mflops;
+
+      rank_id_max = 0;
+      rank_id_min = 0;
+
+      array_mflops[ 0 ] = mflops;
+
       for ( unsigned int i = 1; i < size; i++ )
 	{
 
 	  MPI_Recv( &mflops, 1, MPI_DOUBLE, i, 99, MPI_COMM_WORLD, status );
-	  fprintf(  fp, "MFLOPS: %g\n", mflops );
-                    
+	  array_mflops[ i ] = mflops;
+
+	  if ( mflops > tmp_max_mflops  )
+	    {
+
+	      tmp_max_mflops = mflops;
+	      rank_id_max = i;
+
+	    }
+
+
+	  if ( mflops < tmp_min_mflops )
+	    {
+
+	      tmp_min_mflops = mflops;
+	      rank_id_min = i;
+
+	    }
+                   
 	}
+
+      fprintf( fp, "Max. MFLOPS of process %i (node ): %g\n", rank_id_max, tmp_max_mflops );
+      fprintf( fp, "Min. MFLOPS of process %i (node ): %g\n", rank_id_min, tmp_min_mflops );
+      fprintf( fp, "\n" );
+
+      for ( unsigned int i = 0; i < size; i++ )
+	fprintf( fp, "MFLOPS of process %i: %g\n", i, array_mflops[ i ] );
+	  
 
       fclose( fp );
           
