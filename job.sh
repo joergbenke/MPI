@@ -43,5 +43,5 @@ echo "SLURM JOB_NODELIST" = $SLURM_JOB_NODELIST
 echo "Number of cores on node"=$SLURM_CPUS_ON_NODE
 echo "Number of cores per task"=$SLURM_CPUS_PER_TASK
 
-time mpirun -n 32 --map-by ppr:16:node -map-by core -bind-to core --report-bindings ./midpointrule_mpi_error_criterion
+time mpirun -n 32 --map-by ppr:16:node -map-by core -bind-to core -rank-by core --report-bindings ./midpointrule_mpi_error_criterion
 
